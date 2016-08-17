@@ -1,0 +1,11 @@
+{
+  "MailSettings": {
+    "ToAddress": "shaunmorton@outlook.com"
+  },
+  "ConnectionStrings": {
+    "WorldContextConnection": "Server=(localdb)\\MSSQLLocalDB;Database=TheWorldDb;Trusted_Connection=true;MultipleActiveResultSets=true;"
+  },
+  "Keys": {
+    "BingKey": "AnbE-JAnKjt0Tz7NspartarCsn_dVZZUiGhFAHIc1_yq0bFt_216JTZP7Q_4aG5l"
+  }
+}
