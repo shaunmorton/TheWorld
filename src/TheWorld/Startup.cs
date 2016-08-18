@@ -12,6 +12,7 @@ using TheWorld.Models;
 using TheWorld.Services;
 using Newtonsoft.Json.Serialization;
 using TheWorld.ViewModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace TheWorld
 {
@@ -45,7 +46,15 @@ namespace TheWorld
             services.AddScoped<IWorldRepository, WorldRepository>();
             services.AddTransient<GeoService>();
 
-            //services.AddTransient<WorldContextSeedData>();
+            services.AddIdentity<WorldUser, IdentityRole>(config =>
+            {
+                config.User.RequireUniqueEmail = true;
+                config.Password.RequiredLength = 8;
+                config.Cookies.ApplicationCookie.LoginPath = "/Auth/Login";
+            })
+            .AddEntityFrameworkStores<WorldContext>();
+
+            services.AddTransient<WorldContextSeedData>();
 
             services.AddLogging();
             services.AddMvc()
@@ -55,7 +64,7 @@ namespace TheWorld
                 });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, WorldContextSeedData seeder, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole();
 
@@ -72,6 +81,12 @@ namespace TheWorld
             }
             
             app.UseStaticFiles();
+            app.UseIdentity();
+
+            //I moved this to run before app.UseMvc
+            //attempting to run this after app.UseMvc will throw an AggregateException Error
+            seeder.EnsureSeedData().Wait();
+
             app.UseMvc(config =>
             {
                 config.MapRoute(
@@ -81,7 +96,7 @@ namespace TheWorld
                     );
             });
 
-            //seeder.EnsureSeedData().Wait();
+            
         }
     }
 }

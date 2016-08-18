@@ -47,11 +47,12 @@ namespace TheWorld.Controllers.Api
         {
             try
             {
-                //If the stop is valid
+                //If the new stop is valid
                 if (ModelState.IsValid)
                 {
                     var newStop = AutoMapper.Mapper.Map<Stop>(stop);
 
+                    //use GeoService to get the coordinates
                     var result = await _geoservice.GetCoordsAsync(newStop.Name);
                     if (!result.Success)
                     {

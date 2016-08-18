@@ -9,6 +9,7 @@ using TheWorld.Models;
 using TheWorld.Services;
 using TheWorld.ViewModels;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TheWorld.Controllers.Web
 {
@@ -29,18 +30,15 @@ namespace TheWorld.Controllers.Web
         }
 
         public IActionResult Index()
-        {
-            try
-            {
-                var data = _repository.GetAllTrips();
-                return View(data);
-            }
-            catch (Exception ex)
-            {
+        {           
+            return View();
+        }
 
-                _logger.LogError($"Failed to get Trips: {ex.Message}");
-                return Redirect("/error");
-            }
+        [Authorize]
+        public IActionResult Trips()
+        {
+            var data = _repository.GetAllTrips();
+            return View(data);
         }
 
         public IActionResult Contact()

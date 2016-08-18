@@ -17,6 +17,7 @@
     },
     "TheWorld": {
       "commandName": "Project",
+      "launchBrowser": true,
       "launchUrl": "http://localhost:5000",
       "environmentVariables": {
         "MailSettings__ToAddress": "bopem@icloud.com",
