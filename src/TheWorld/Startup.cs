@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +14,7 @@ using TheWorld.Services;
 using Newtonsoft.Json.Serialization;
 using TheWorld.ViewModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TheWorld
 {
@@ -42,6 +44,14 @@ namespace TheWorld
                 services.AddScoped<IMailService, DebugMailService>();
             }
 
+            if (_env.IsProduction())
+            {
+                services.AddMvc(config =>
+                {
+                    config.Filters.Add(new RequireHttpsAttribute());
+                });
+            }
+
             services.AddDbContext<WorldContext>();
             services.AddScoped<IWorldRepository, WorldRepository>();
             services.AddTransient<GeoService>();
@@ -51,12 +61,30 @@ namespace TheWorld
                 config.User.RequireUniqueEmail = true;
                 config.Password.RequiredLength = 8;
                 config.Cookies.ApplicationCookie.LoginPath = "/Auth/Login";
+                config.Cookies.ApplicationCookie.Events = new CookieAuthenticationEvents()
+                {
+                    OnRedirectToLogin = async ctx =>
+                    {
+                        if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == 200)
+                        {
+                            ctx.Response.StatusCode = 401;
+                        }
+                        else
+                        {
+                            ctx.Response.Redirect(ctx.RedirectUri);
+                        }
+                        await Task.Yield();
+                    }
+                };
+
+
             })
             .AddEntityFrameworkStores<WorldContext>();
 
             services.AddTransient<WorldContextSeedData>();
 
             services.AddLogging();
+
             services.AddMvc()
                 .AddJsonOptions(config =>
                 {
