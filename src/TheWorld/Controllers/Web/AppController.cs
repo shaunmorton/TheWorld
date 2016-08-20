@@ -37,8 +37,8 @@ namespace TheWorld.Controllers.Web
         [Authorize]
         public IActionResult Trips()
         {
-            var data = _repository.GetAllTrips();
-            return View(data);
+            //var data = _repository.GetAllTrips();
+            return View();
         }
 
         public IActionResult Contact()
