@@ -40,19 +40,6 @@ namespace TheWorld
         {
             services.AddSingleton(_config);
 
-            //if (_env.IsDevelopment())
-            //{
-            //    services.AddScoped<IMailService, DebugMailService>();
-            //}
-
-            //if (_env.IsProduction())
-            //{
-            //    services.AddMvc(config =>
-            //    {
-            //        config.Filters.Add(new RequireHttpsAttribute());
-            //    });
-            //}
-
             services.AddDbContext<WorldContext>();
 
             services.AddScoped<IWorldRepository, WorldRepository>();
@@ -113,8 +100,6 @@ namespace TheWorld
             app.UseStaticFiles();
             app.UseIdentity();
 
-            //I moved this to run before app.UseMvc
-            //attempting to run this after app.UseMvc will throw an AggregateException Error
             seeder.EnsureSeedData().Wait();
 
             app.UseMvc(config =>
