@@ -20,7 +20,7 @@
                     //success
                 angular.copy(res.data, vm.stops);
                 _showMap(vm.stops);
-            }, function(error) {
+            }, function(err) {
                     //failure
                     vm.errorMessage = "Failed to get stops";
                 })
@@ -64,7 +64,7 @@
                 stops: mapStops,
                 selector: "#map",
                 currentStop: 1,
-                initialZoom: 3
+                initialZoom: 4
             });
         }
     }

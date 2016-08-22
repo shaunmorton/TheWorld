@@ -11,7 +11,7 @@
 
     <form novalidate name="newTripForm" ng-submit="vm.addTrip()">
         <div class="form-group">
-            <label>Trip Name</label>
+            <label class="text-uppercase">Add a New Trip:</label>
             <input class="form-control" type="text" id="name" name="name" ng-model="vm.newTrip.name" required ng-minlength="5" />
             <span ng-show="newTripForm.name.$error.required" class="text-warning">Name is required</span>
             <span ng-show="newTripForm.name.$error.minlength" class="text-warning">Name must be at least 5 characters</span>

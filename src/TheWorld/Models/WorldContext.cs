@@ -13,7 +13,7 @@ namespace TheWorld.Models
     {
         private IConfigurationRoot _config;
 
-        public WorldContext(IConfigurationRoot config, DbContextOptions options)
+        public WorldContext(IConfigurationRoot config, DbContextOptions<WorldContext> options)
             :base(options)
         {
             _config = config;

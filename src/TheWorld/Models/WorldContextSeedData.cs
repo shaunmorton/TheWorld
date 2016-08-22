@@ -21,12 +21,12 @@ namespace TheWorld.Models
         public async Task EnsureSeedData()
         {
 
-            if (await _userManager.FindByEmailAsync("test.user@theworld.com") == null)
+            if (await _userManager.FindByEmailAsync("new.user@shaunmorton.me") == null)
             {
                 var user = new WorldUser()
                 {
-                    UserName = "testuser",
-                    Email = "test.user@theworld.com"
+                    UserName = "newuser",
+                    Email = "new.user@shaunmorton.me"
                 };
 
                 await _userManager.CreateAsync(user, "P@ssw0rd");

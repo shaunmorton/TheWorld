@@ -14,7 +14,6 @@
     "travelmap" : "~1.0.2" 
   },
   "resolutions": {
-    "jquery": ">= 1.7.2",
-    "angular": "1.5.8"
+    "jquery": ">= 1.7.2"
   }
 }

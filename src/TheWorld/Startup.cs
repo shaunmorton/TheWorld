@@ -29,7 +29,8 @@ namespace TheWorld
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(_env.ContentRootPath)
-                .AddJsonFile("config.json")
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
 
             _config = builder.Build();
@@ -39,20 +40,21 @@ namespace TheWorld
         {
             services.AddSingleton(_config);
 
-            if (_env.IsDevelopment())
-            {
-                services.AddScoped<IMailService, DebugMailService>();
-            }
+            //if (_env.IsDevelopment())
+            //{
+            //    services.AddScoped<IMailService, DebugMailService>();
+            //}
 
-            if (_env.IsProduction())
-            {
-                services.AddMvc(config =>
-                {
-                    config.Filters.Add(new RequireHttpsAttribute());
-                });
-            }
+            //if (_env.IsProduction())
+            //{
+            //    services.AddMvc(config =>
+            //    {
+            //        config.Filters.Add(new RequireHttpsAttribute());
+            //    });
+            //}
 
             services.AddDbContext<WorldContext>();
+
             services.AddScoped<IWorldRepository, WorldRepository>();
             services.AddTransient<GeoService>();
 
@@ -102,7 +104,7 @@ namespace TheWorld
                 config.CreateMap<StopViewModel, Stop>().ReverseMap();
             });
 
-            if (env.IsDevelopment())
+            if (env.IsProduction())
             {
                 app.UseDeveloperExceptionPage();
                 loggerFactory.AddDebug(LogLevel.Information);
