@@ -13,4 +13,3 @@ The sample app was made using the following:
 * [Travelmap] (https://github.com/shawnwildermuth/travelMap)
 * [UnderscoreJS 1.8.3] (http://underscorejs.org/)
 
-You can see a live demo of the app [here] (http://theworld20160821041441.azurewebsites.net/).  Contact me for login details.
